@@ -14,7 +14,7 @@ namespace server.DAL
 
         }   
         public DbSet<Flight> flights { get; set; }
-        public DbSet<FlightLogger> flightsLogger { get; set; }
+        public DbSet<Flight> flightsLogger { get; set; }
 
 
     }

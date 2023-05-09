@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using server.DAL;
 using server.Models;
 using server.Services;
 
@@ -13,9 +14,11 @@ namespace server.Controllers
     public class mainController : ControllerBase
     {
         private readonly flightControlService _flightControlService;
-        public mainController(flightControlService flightControlService)
+        private readonly DataContext _context;
+        public mainController(flightControlService flightControlService, DataContext context)
         {
             _flightControlService = flightControlService;
+            _context = context;
         }
         
         [HttpPost]
@@ -38,6 +41,13 @@ namespace server.Controllers
         public ActionResult<Flight> getFlight()
         {
             // this will be requested from the react app to present it in real time(signal r)
+            return Ok();
+        }
+        [HttpDelete]
+        public ActionResult delete()
+        {
+            _context.flights.RemoveRange(_context.flights);
+            _context.SaveChanges();
             return Ok();
         }
 
