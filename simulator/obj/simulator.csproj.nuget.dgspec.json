@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/ron/Desktop/finalProject/simulator/simulator.csproj": {}
+    "/home/ron/Desktop/finalProject/airport/simulator/simulator.csproj": {}
   },
   "projects": {
-    "/home/ron/Desktop/finalProject/simulator/simulator.csproj": {
+    "/home/ron/Desktop/finalProject/airport/simulator/simulator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/ron/Desktop/finalProject/simulator/simulator.csproj",
+        "projectUniqueName": "/home/ron/Desktop/finalProject/airport/simulator/simulator.csproj",
         "projectName": "simulator",
-        "projectPath": "/home/ron/Desktop/finalProject/simulator/simulator.csproj",
+        "projectPath": "/home/ron/Desktop/finalProject/airport/simulator/simulator.csproj",
         "packagesPath": "/home/ron/.nuget/packages/",
-        "outputPath": "/home/ron/Desktop/finalProject/simulator/obj/",
+        "outputPath": "/home/ron/Desktop/finalProject/airport/simulator/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/ron/.nuget/NuGet/NuGet.Config"

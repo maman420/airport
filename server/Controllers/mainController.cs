@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using server.DAL;
 using server.Models;
@@ -11,6 +12,7 @@ namespace server.Controllers
 {
     [ApiController]
     [Route("")]
+    [EnableCors("AllowAll")]
     public class mainController : ControllerBase
     {
         private readonly flightControlService _flightControlService;
@@ -34,7 +36,8 @@ namespace server.Controllers
         public ActionResult<IEnumerable<Flight>> getAllFlights()
         {
             // this will be requested from the react app to present it in real time(signal r)
-            return Ok();
+            IEnumerable<Flight> allFlights = _context.flights;
+            return Ok(allFlights);
         }
 
         [HttpGet("flight")]

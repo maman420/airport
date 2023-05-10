@@ -9,6 +9,8 @@ handler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousA
 var client = new HttpClient(handler);
 
 var url = "http://localhost:5014";
+await client.DeleteAsync(url);
+await Task.Delay(1000);
 
 while(true){
     var newFlight = new {
