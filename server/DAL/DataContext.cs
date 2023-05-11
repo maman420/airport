@@ -19,13 +19,13 @@ namespace server.DAL
         }   
         public DbSet<Flight> flights { get; set; }
         public DbSet<Flight> flightsLogger { get; set; }
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        public override int SaveChanges()
         {
-            var result = await base.SaveChangesAsync(cancellationToken);
+            var result = base.SaveChanges();
 
             IEnumerable<Flight> allFlights = flights.ToList();
             string allFlightsJson = JsonConvert.SerializeObject(allFlights);
-            await _airportHub.Clients.All.SendData(allFlightsJson);
+            _airportHub.Clients.All.SendData(allFlightsJson);
 
             return result;
         }
