@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import * as signalR from "@microsoft/signalr";
 
 function Table() {
     const [table, setTable] = useState([]);
@@ -7,12 +8,22 @@ function Table() {
 
     useEffect(() => {
         fetchTable();
+
+        const connection = new signalR.HubConnectionBuilder()
+        .withUrl("https://localhost:7196/airporthub")
+        .build();
+  
+      connection.on("SendData", (d) => {
+        setTable(JSON.parse(d));
+      });
+  
+      connection.start();
+  
     }, []);
 
     const fetchTable = async () => {
         try {
             const response = await axios.get(url, { withCredentials: true });
-            console.log(response.data)
             setTable(response.data);
         } catch (error) {
             console.error(error);
@@ -23,8 +34,8 @@ function Table() {
     return (
         <div>
             <h1>Table</h1>
-            {table.map(row => (
-                <p key={row.id}>flight: {row.id}, name: {row.name}, location: {row.legLocation}</p>
+            {table.map((item, index) => (
+                <p key={index}>flight: {item.Id}, name: {item.Name}, location: {item.LegLocation}</p>
             ))}
         </div>
     );

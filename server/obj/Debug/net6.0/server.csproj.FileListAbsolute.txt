@@ -124,3 +124,5 @@
 /home/ron/Desktop/finalProject/airport/server/obj/Debug/net6.0/server.pdb
 /home/ron/Desktop/finalProject/airport/server/obj/Debug/net6.0/server.genruntimeconfig.cache
 /home/ron/Desktop/finalProject/airport/server/obj/Debug/net6.0/ref/server.dll
+/home/ron/Desktop/finalProject/airport/server/bin/Debug/net6.0/Newtonsoft.Json.dll
+/home/ron/Desktop/finalProject/airport/server/bin/Debug/net6.0/System.Net.WebSockets.WebSocketProtocol.dll

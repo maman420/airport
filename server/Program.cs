@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using server.DAL;
+using server.Hubs;
 using server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,7 @@ builder.Services.AddCors(options =>
                .AllowCredentials(); // add this line to allow credentials
     });
 });
+builder.Services.AddSignalR();
 
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Singleton);
@@ -33,6 +35,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseRouting();
+
 app.UseCors();
 app.Use(async (context, next) =>
 {
@@ -41,10 +46,18 @@ app.Use(async (context, next) =>
     await next();
 });
 
-app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapHub<airportHub>("/airporthub");
+});
+
+app.UseHttpsRedirection();
+
+
 app.MapControllers();
+
 
 app.Run();
