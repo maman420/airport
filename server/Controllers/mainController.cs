@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +11,6 @@ namespace server.Controllers
 {
     [ApiController]
     [Route("")]
-    [EnableCors("AllowAll")]
     public class mainController : ControllerBase
     {
         private IHubContext < airportHub, IairportHub > _airportHub;
@@ -26,15 +21,6 @@ namespace server.Controllers
             _flightControlService = flightControlService;
             _context = context;
             _airportHub = airportHub;
-        }
-        
-        [HttpPost]
-        public IActionResult addFlight(Flight flight)
-        {
-            // this will be requested from the simulator that will add flights,
-            // when flight is added, this function will put the flight in leg 1 or tell him to wait in the sky.
-            _flightControlService.addFlight(flight);            
-            return Ok();
         }
 
         [HttpGet]
@@ -47,16 +33,36 @@ namespace server.Controllers
             return Ok(allFlightsJson);
         }
 
-
-
         [HttpGet("flight")]
-        public ActionResult<Flight> getFlight()
+        public ActionResult<Flight> getFlight(int id)
         {
             // this will be requested from the react app to present it in real time(signal r)
+            Flight singleFlight = _context.flights.FirstOrDefault(f => f.Id == id);
+            string singleFlightJson = JsonConvert.SerializeObject(singleFlight);
+            
+            return Ok(singleFlightJson);
+        }
+        
+        [HttpPost]
+        public async Task<IActionResult> addFlightFromAir(Flight flight)
+        {
+            // this will be requested from the simulator that will add flights,
+            // when flight is added, this function will put the flight in leg 1 or tell him to wait in the sky.
+            await _flightControlService.addFlightFromAir(flight);            
+            return Ok();
+        }
+
+        [HttpPost("fromTerminal")]
+        public async Task<IActionResult> addFlightFromTerminal(Flight flight)
+        {
+            // this will be requested from the simulator that will add flights,
+            // when flight is added, this function will put the flight in leg 6/7 or tell him to wait in the terminal.
+            await _flightControlService.addFlightFromTerminal(flight);            
             return Ok();
         }
 
         [HttpDelete]
+        [Route("deleteAll")]
         public ActionResult delete()
         {
             _context.flights.RemoveRange(_context.flights);
@@ -64,5 +70,19 @@ namespace server.Controllers
             return Ok();
         }
 
+        [HttpDelete]
+        [Route("deleteFlight/{id}")]
+        public ActionResult deleteFlight(int id)
+        {
+            var flight = _context.flights.FirstOrDefault(f => f.Id == id);
+            if (flight == null)
+            {
+                return NotFound();
+            }
+
+            _context.flights.Remove(flight);
+            _context.SaveChanges();
+            return Ok();
+        }
     }
 }

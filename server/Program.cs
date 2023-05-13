@@ -8,12 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder =>
+    options.AddDefaultPolicy(options =>
     {
-        builder.WithOrigins("http://localhost:3000")
-               .AllowAnyHeader()
-               .AllowAnyMethod()
-               .AllowCredentials(); // add this line to allow credentials
+        options.WithOrigins("http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 builder.Services.AddSignalR();
@@ -38,16 +38,18 @@ if (app.Environment.IsDevelopment())
 
 app.UseRouting();
 
-app.UseCors();
 app.Use(async (context, next) =>
 {
     context.Response.Headers.Add("Access-Control-Allow-Origin", "http://localhost:3000");
+    context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
     context.Response.Headers.Add("Access-Control-Allow-Credentials", "true");
     await next();
 });
 
+app.UseCors();
 
 app.UseAuthorization();
+
 
 app.UseEndpoints(endpoints =>
 {

@@ -1,12 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using server.DAL;
 using server.Models;
-using System.Timers;
-using Timer = System.Timers.Timer;
-using Microsoft.EntityFrameworkCore;
 
 namespace server.Services
 {
@@ -15,14 +8,14 @@ namespace server.Services
         private readonly object contextLock = new object();
         private readonly DataContext _context;
         private Random rnd;
-        
         public flightControlService(DataContext context)
         {
             _context = context;
             rnd = new Random();
         }
-        public async void addFlight(Flight flight)
-        {
+        public async Task addFlightFromAir(Flight flight)
+        {                
+            await Task.Delay(1000);
             if(canEnterAirport()){
                 lock(contextLock)
                 {
@@ -31,41 +24,68 @@ namespace server.Services
                 }
                 await leg1(flight.Id);
             } else {
-                await Task.Delay(1000);
-                addFlight(flight);
+                await addFlightFromAir(flight);
             }
+        }
+        public async Task addFlightFromTerminal(Flight flight)
+        {
+            List<Flight> leg6Planes;
+            List<Flight> leg7Planes;
+            lock(contextLock){
+                leg6Planes = _context.flights.Where(flight => flight.LegLocation == 6).ToList();
+                leg7Planes = _context.flights.Where(flight => flight.LegLocation == 7).ToList();
+            }
+            if(leg6Planes.Any() && leg7Planes.Any()) {
+                await Task.Delay(1000);
+                await addFlightFromTerminal(flight);
+            }
+            else {                    
+                await Task.Delay(rnd.Next(1000,5000));
+
+                if(leg6Planes.Count > leg7Planes.Count){
+                    lock(contextLock){                        
+                        flight.LegLocation = 7;
+                        _context.flights.Add(flight);
+                        _context.SaveChanges();
+                    }
+                    await leg7(flight.Id);
+                }
+                else{
+                    lock(contextLock){
+                        flight.LegLocation = 7;
+                        _context.flights.Add(flight);
+                        _context.SaveChanges();
+                    }
+                    await leg6(flight.Id);
+                }
+            }  
         }
         public bool canEnterAirport()
         {
             lock(contextLock)
             {
-                return !_context.flights.Any(flight => flight.LegLocation == 1);
+                return !_context.flights.Any(flight => flight.LegLocation == 1 || flight.LegLocation == 2 || flight.LegLocation == 3);
             }
         }
-
-
         private async Task leg1(int flightId)
         {
             Console.WriteLine("plane "+ flightId + " is on leg1");
             int count;
             lock(contextLock){
+                var changeFlightLeg = _context.flights.Find(flightId);
+                if (changeFlightLeg != null)
+                {
+                    changeFlightLeg.LegLocation = 1;
+                    _context.SaveChanges();
+                }                   
                 count = _context.flights.Where(flight => flight.LegLocation == 2).ToList().Count();
-            }
+            }                     
             if(count > 5) {
                 await Task.Delay(1000);
                 await leg1(flightId);
             }
             else {                
                 await Task.Delay(rnd.Next(1000,5000));
-                lock(contextLock){
-                    var changeFlightLeg = _context.flights.Find(flightId);
-                    if (changeFlightLeg != null)
-                    {
-                        changeFlightLeg.LegLocation = 2;
-                        _context.SaveChanges();
-                    }     
-                }
-           
                 await leg2(flightId);
             }
         }
@@ -74,6 +94,12 @@ namespace server.Services
             Console.WriteLine("plane "+ flightId + " is on leg2");
             int count;
             lock(contextLock){
+                var changeFlightLeg = _context.flights.Find(flightId);
+                if (changeFlightLeg != null)
+                {
+                    changeFlightLeg.LegLocation = 2;
+                    _context.SaveChanges();
+                }                 
                 count = _context.flights.Where(flight => flight.LegLocation == 3).ToList().Count();
             }
             if(count > 5) {
@@ -81,40 +107,32 @@ namespace server.Services
                 await leg2(flightId);
             }
             else {                
-                await Task.Delay(rnd.Next(1000,5000));
-                lock(contextLock){
-                    var changeFlightLeg = _context.flights.Find(flightId);
-                    if (changeFlightLeg != null)
-                    {
-                        changeFlightLeg.LegLocation = 3;
-                        _context.SaveChanges();
-                    } 
-                }               
+                await Task.Delay(rnd.Next(1000,5000));            
                 await leg3(flightId);
             }
         }
-
         private async Task leg3(int flightId)
         {
             Console.WriteLine("plane "+ flightId + " is on leg3");
-            bool found;
+            bool is4legFree;
             lock(contextLock){
-                found = _context.flights.Any(flight => flight.LegLocation == 4);
+                var changeFlightLeg = _context.flights.Find(flightId);
+                if (changeFlightLeg != null)
+                {
+                    changeFlightLeg.LegLocation = 3;
+                    _context.SaveChanges();
+                }                
+            }                
+            await Task.Delay(rnd.Next(1000,5000));                
+            lock(contextLock){
+                is4legFree = _context.flights.Any(flight => flight.LegLocation == 4);
             }
-            if(found) {
+
+            if(is4legFree) {
                 await Task.Delay(1000);
                 await leg3(flightId);
             }
             else {
-                await Task.Delay(rnd.Next(1000,5000));                
-                lock(contextLock){
-                    var changeFlightLeg = _context.flights.Find(flightId);
-                    if (changeFlightLeg != null)
-                    {
-                        changeFlightLeg.LegLocation = 4;
-                        _context.SaveChanges();
-                    }                
-                }
                 await leg4(flightId, true);
             }
         }
@@ -124,6 +142,11 @@ namespace server.Services
             var nextLeg = landing ? 5 : 9;
             int count;
             lock(contextLock){
+                var changeFlightLeg = _context.flights.Find(flightId);
+                if (changeFlightLeg != null) {
+                    changeFlightLeg.LegLocation = 4;
+                    _context.SaveChanges();
+                }  
                 count = _context.flights.Where(flight => flight.LegLocation == nextLeg).ToList().Count();
             }
             if(count > 5) {
@@ -131,17 +154,11 @@ namespace server.Services
                 await leg4(flightId, landing);
             }
             else {                
-                await Task.Delay(rnd.Next(1000,5000));
-                lock(contextLock){
-                    var changeFlightLeg = _context.flights.Find(flightId);
-                    if (changeFlightLeg != null) {
-                        changeFlightLeg.LegLocation = nextLeg;
-                        _context.SaveChanges();
-                    }  
-                }
                 if(landing){
-                   await leg5(flightId); 
+                    await Task.Delay(rnd.Next(1000,3000));
+                    await leg5(flightId); 
                 }else{
+                    await Task.Delay(rnd.Next(3000,5000));
                     await leg9(flightId);
                 }
             }
@@ -149,41 +166,32 @@ namespace server.Services
         private async Task leg5(int flightId)
         {
             Console.WriteLine("plane "+ flightId + " is on leg5");
+            Flight changeFlightLeg;
             List<Flight> leg6Planes;
             List<Flight> leg7Planes;
             lock(contextLock){
+                changeFlightLeg = _context.flights.Find(flightId);
+                if (changeFlightLeg != null) {
+                    changeFlightLeg.LegLocation = 5;
+                    _context.SaveChanges();
+                }
                 leg6Planes = _context.flights.Where(flight => flight.LegLocation == 6).ToList();
                 leg7Planes = _context.flights.Where(flight => flight.LegLocation == 7).ToList();
             }
-            if(leg6Planes.Any() || leg7Planes.Any()) {
+            if(leg6Planes.Any() && leg7Planes.Any()) {
                 await Task.Delay(1000);
                 await leg5(flightId);
             }
             else {                    
                 await Task.Delay(rnd.Next(1000,5000));
-
-                Flight changeFlightLeg;
-                lock(contextLock){
-                    changeFlightLeg = _context.flights.Find(flightId);
-                }
-                if (changeFlightLeg != null)
-                {
+                if (changeFlightLeg != null) {
                     if(leg6Planes.Count > leg7Planes.Count){
-                        lock(contextLock){
-                            changeFlightLeg.LegLocation = 7;
-                            _context.SaveChanges();
-                        }
                         await leg7(flightId);
                     }
                     else{
-                        lock(contextLock){
-                            changeFlightLeg.LegLocation = 6;                    
-                            _context.SaveChanges();
-                        }
                         await leg6(flightId);
                     }
                 }    
-                            
             }
         }
         private async Task leg6(int flightId)
@@ -191,6 +199,11 @@ namespace server.Services
             Console.WriteLine("plane "+ flightId + " is on leg6");
             int count;
             lock (contextLock){
+                var changeFlightLeg = _context.flights.Find(flightId);
+                if (changeFlightLeg != null) {
+                    changeFlightLeg.LegLocation = 6;
+                    _context.SaveChanges();
+                }  
                 count = _context.flights.Where(flight => flight.LegLocation == 8).ToList().Count();
             }
             if(count > 5) {
@@ -199,14 +212,6 @@ namespace server.Services
             }
             else {                
                 await Task.Delay(rnd.Next(1000,5000));
-                lock(contextLock){
-                    var changeFlightLeg = _context.flights.Find(flightId);
-                    if (changeFlightLeg != null)
-                    {
-                        changeFlightLeg.LegLocation = 8;
-                        _context.SaveChanges();
-                    }  
-                }
                 await leg8(flightId);
             }
         }
@@ -215,6 +220,11 @@ namespace server.Services
             Console.WriteLine("plane "+ flightId + " is on leg7");
             int count;
             lock (contextLock){
+                var changeFlightLeg = _context.flights.Find(flightId);
+                if (changeFlightLeg != null) {
+                    changeFlightLeg.LegLocation = 7;
+                    _context.SaveChanges();
+                }    
                 count = _context.flights.Where(flight => flight.LegLocation == 8).ToList().Count();
             }
             if(count > 5) {
@@ -223,14 +233,6 @@ namespace server.Services
             }
             else {                
                 await Task.Delay(rnd.Next(1000,5000));
-                lock(contextLock){
-                    var changeFlightLeg = _context.flights.Find(flightId);
-                    if (changeFlightLeg != null)
-                    {
-                        changeFlightLeg.LegLocation = 8;
-                        _context.SaveChanges();
-                    }      
-                }
                 await leg8(flightId);
             }
         }
@@ -239,6 +241,11 @@ namespace server.Services
             Console.WriteLine("plane "+ flightId + " is on leg8");
             bool leg4isFree;
             lock(contextLock){
+                var changeFlightLeg = _context.flights.Find(flightId);
+                if (changeFlightLeg != null) {
+                    changeFlightLeg.LegLocation = 8;
+                    _context.SaveChanges();
+                }  
                 leg4isFree = _context.flights.Any(flight => flight.LegLocation == 4);
             }
             if(leg4isFree) {
@@ -247,40 +254,33 @@ namespace server.Services
             }
             else {                
                 await Task.Delay(rnd.Next(1000,5000));
-                lock(contextLock){
-                    var changeFlightLeg = _context.flights.Find(flightId);
-                    if (changeFlightLeg != null)
-                    {
-                        changeFlightLeg.LegLocation = 4;
-                        _context.SaveChanges();
-                    }     
-                }
                 await leg4(flightId, false);
             }
         }
         private async Task leg9(int flightId)
         {
             Console.WriteLine("plane "+ flightId + " is on leg9");
-            await Task.Delay(rnd.Next(1000,5000));
             lock(contextLock){
                 var changeFlightLeg = _context.flights.Find(flightId);
-                if (changeFlightLeg != null)
-                {
-                    changeFlightLeg.LegLocation = 0;
+                if (changeFlightLeg != null) {
+                    changeFlightLeg.LegLocation = 9;
                     _context.SaveChanges();
                 }                
-                var flight = _context.flights.FirstOrDefault(f => f.Id == flightId);
+            }
+            await Task.Delay(rnd.Next(1000,5000));
+            departing(flightId);
+        }
+        private void departing(int flightId)
+        {
+            lock (contextLock){
+                var flight = _context.flights.Find(flightId);
                 if (flight != null)
                 {
-                    _context.flightsLogger.Add(flight);
-                    _context.flights.Remove(flight);
+                    flight.LegLocation = 0;
                     _context.SaveChanges();
-                } 
+                }
             }
-
-            // remove from db flights and add to flightslogger
             Console.WriteLine("departed!!!");
         }
-        
     }
 }
