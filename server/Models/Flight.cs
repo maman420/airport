@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace server.Models
 {
     public class Flight
@@ -10,5 +5,7 @@ namespace server.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int LegLocation { get; set; }
+        public string AirLine { get; set; }
+
     }
 }

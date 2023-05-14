@@ -2,29 +2,28 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import * as signalR from "@microsoft/signalr";
 import styles from './table.module.css';
-import { Link } from 'react-router-dom';
 
 function Table() {
     const [table, setTable] = useState([]);
-    const url = "https://localhost:7196/";
+    const url = "http://localhost:5014/";
 
     useEffect(() => {
         fetchTable();
 
         const connection = new signalR.HubConnectionBuilder()
-        .withUrl("https://localhost:7196/airporthub")
-        .build();
-  
-      connection.on("SendData", (d) => {
-        setTable(JSON.parse(d));
-      });
-  
-      connection.start();
+            .withUrl("http://localhost:5014/airporthub")
+            .build();
+    
+        connection.on("SendData", (d) => {
+            setTable(JSON.parse(d));
+        });
+    
+        connection.start();
     }, []);
 
     const fetchTable = async () => {
         try {
-            const response = await axios.get(url, { withCredentials: true });
+            const response = await axios.get(url);
             setTable(response.data);
         } catch (error) {
             console.error(error);
@@ -48,6 +47,7 @@ function Table() {
                         <th>flight</th>
                         <th>name</th>
                         <th>location</th>
+                        <th>Airline</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -57,6 +57,7 @@ function Table() {
                             <td>{item.Id}</td>
                             <td>{item.Name}</td>
                             <td>{item.LegLocation}</td>
+                            <td>{item.AirLine}</td>
                             <td><button onClick={() => onDeleteHandler(item.Id)}>delete</button></td>
                         </tr>
                     ))}

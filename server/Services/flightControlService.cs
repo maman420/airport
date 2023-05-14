@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.SignalR;
 using server.DAL;
+using server.Hubs;
 using server.Models;
 
 namespace server.Services
@@ -8,10 +10,12 @@ namespace server.Services
         private readonly object contextLock = new object();
         private readonly DataContext _context;
         private Random rnd;
-        public flightControlService(DataContext context)
+        private IHubContext < airportHub, IairportHub > _airportHub;
+        public flightControlService(DataContext context, IHubContext < airportHub, IairportHub > airportHub)
         {
             _context = context;
             rnd = new Random();
+            _airportHub = airportHub;
         }
         public async Task addFlightFromAir(Flight flight)
         {                
@@ -64,7 +68,7 @@ namespace server.Services
         {
             lock(contextLock)
             {
-                return !_context.flights.Any(flight => flight.LegLocation == 1 || flight.LegLocation == 2 || flight.LegLocation == 3);
+                return !_context.flights.Any(flight => flight.LegLocation == 1);
             }
         }
         private async Task leg1(int flightId)
@@ -85,7 +89,7 @@ namespace server.Services
                 await leg1(flightId);
             }
             else {                
-                await Task.Delay(rnd.Next(1000,5000));
+                await Task.Delay(rnd.Next(1000,3000));
                 await leg2(flightId);
             }
         }
@@ -107,7 +111,7 @@ namespace server.Services
                 await leg2(flightId);
             }
             else {                
-                await Task.Delay(rnd.Next(1000,5000));            
+                await Task.Delay(rnd.Next(1000,3000));            
                 await leg3(flightId);
             }
         }
@@ -123,7 +127,7 @@ namespace server.Services
                     _context.SaveChanges();
                 }                
             }                
-            await Task.Delay(rnd.Next(1000,5000));                
+            await Task.Delay(rnd.Next(1000,3000));                
             lock(contextLock){
                 is4legFree = _context.flights.Any(flight => flight.LegLocation == 4);
             }

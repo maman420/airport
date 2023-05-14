@@ -18,7 +18,6 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddSignalR();
 
-
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Singleton);
 builder.Services.AddSingleton<flightControlService>();
 builder.Services.AddControllers();
@@ -27,7 +26,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -50,7 +48,6 @@ app.UseCors();
 
 app.UseAuthorization();
 
-
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapHub<airportHub>("/airporthub");
@@ -58,8 +55,6 @@ app.UseEndpoints(endpoints =>
 
 app.UseHttpsRedirection();
 
-
 app.MapControllers();
-
 
 app.Run();
