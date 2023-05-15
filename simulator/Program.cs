@@ -25,7 +25,7 @@ while(true){
         await client.PostAsync(url + "fromTerminal", content);
 
     Console.WriteLine("plane " + newFlight.Name + " is sent to the airport!");
-    await Task.Delay(random.Next(1000,3000));
+    await Task.Delay(random.Next(3000,5000));
 }
   
 

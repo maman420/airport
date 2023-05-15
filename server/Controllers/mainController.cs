@@ -14,74 +14,69 @@ namespace server.Controllers
     {
         private IHubContext < airportHub, IairportHub > _airportHub;
         private readonly flightControlService _flightControlService;
-        private readonly DataContext _context;
-        public mainController(flightControlService flightControlService, DataContext context, IHubContext < airportHub, IairportHub > airportHub)
+        private readonly Repository _repository;
+        public mainController(Repository repository, flightControlService flightControlService, IHubContext < airportHub, IairportHub > airportHub)
         {
             _flightControlService = flightControlService;
-            _context = context;
             _airportHub = airportHub;
+            _repository = repository;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Flight>>> GetAllFlights()
         {
-            IEnumerable<Flight> allFlights = _context.flights.ToList();
+            IEnumerable<Flight> allFlights = _repository.GetAll().ToList();
             string allFlightsJson = JsonConvert.SerializeObject(allFlights);
-            await _airportHub.Clients.All.SendData(allFlightsJson);
+            await _airportHub.Clients.All.SendAllFlights(allFlightsJson);
 
             return Ok(allFlightsJson);
         }
 
         [HttpGet("flight")]
-        public ActionResult<Flight> getFlight(int id)
+        public async Task<ActionResult<Flight>> GetFlight(int id)
         {
             // this will be requested from the react app to present it in real time(signal r)
-            Flight singleFlight = _context.flights.FirstOrDefault(f => f.Id == id);
+            Flight singleFlight = await _repository.FindFlight(id);
             string singleFlightJson = JsonConvert.SerializeObject(singleFlight);
             
             return Ok(singleFlightJson);
         }
         
         [HttpPost]
-        public async Task<IActionResult> addFlightFromAir(Flight flight)
+        public IActionResult AddFlightFromAir(Flight flight)
         {
             // this will be requested from the simulator that will add flights,
             // when flight is added, this function will put the flight in leg 1 or tell him to wait in the sky.
-            await _flightControlService.addFlightFromAir(flight);            
+            _flightControlService.addFlightFromAir(flight);
             return Ok();
         }
 
         [HttpPost("fromTerminal")]
-        public async Task<IActionResult> addFlightFromTerminal(Flight flight)
+        public IActionResult AddFlightFromTerminal(Flight flight)
         {
             // this will be requested from the simulator that will add flights,
             // when flight is added, this function will put the flight in leg 6/7 or tell him to wait in the terminal.
-            await _flightControlService.addFlightFromTerminal(flight);            
+            _flightControlService.addFlightFromTerminal(flight);            
             return Ok();
         }
 
         [HttpDelete]
         [Route("deleteAll")]
-        public ActionResult delete()
+        public async Task<ActionResult> DeleteAll()
         {
-            _context.flights.RemoveRange(_context.flights);
-            _context.SaveChanges();
+            await _repository.DeleteAll();
             return Ok();
         }
 
         [HttpDelete]
         [Route("deleteFlight/{id}")]
-        public ActionResult deleteFlight(int id)
+        public async Task<ActionResult> DeleteFlightAsync(int id)
         {
-            var flight = _context.flights.FirstOrDefault(f => f.Id == id);
-            if (flight == null)
-            {
+            int deletedOrNot = await _repository.DeleteFlight(id);
+            if(deletedOrNot == 1)
+                return Ok();
+            else
                 return NotFound();
-            }
-
-            _context.flights.Remove(flight);
-            _context.SaveChanges();
-            return Ok();
         }
     }
 }

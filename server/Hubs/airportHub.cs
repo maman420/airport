@@ -8,9 +8,9 @@ namespace server.Hubs
 {
     public class airportHub : Hub<IairportHub>
     {
-        public async Task SendData(string allFlights)
+        public async Task SendAllFlights(string allFlights)
         {
-            await Clients.All.SendData(allFlights);
+            await Clients.All.SendAllFlights(allFlights);
         }
     }
 }

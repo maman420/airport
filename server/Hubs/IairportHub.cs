@@ -8,6 +8,6 @@ namespace server.Hubs
 {
     public interface IairportHub
     {
-        Task SendData(string allFlights);
+        Task SendAllFlights(string allFlights);
     }
 }

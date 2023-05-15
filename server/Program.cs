@@ -20,6 +20,7 @@ builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<DataContext>(options => options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")), ServiceLifetime.Singleton);
 builder.Services.AddSingleton<flightControlService>();
+builder.Services.AddSingleton<Repository>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

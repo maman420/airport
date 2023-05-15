@@ -14,7 +14,7 @@ function Table() {
             .withUrl("http://localhost:5014/airporthub")
             .build();
     
-        connection.on("SendData", (d) => {
+        connection.on("SendAllFlights", (d) => {
             setTable(JSON.parse(d));
         });
     
