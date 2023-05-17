@@ -6,6 +6,5 @@ namespace server.Models
         public string Name { get; set; }
         public int LegLocation { get; set; }
         public string AirLine { get; set; }
-
     }
 }

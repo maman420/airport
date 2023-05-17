@@ -12,5 +12,9 @@ namespace server.Hubs
         {
             await Clients.All.SendAllFlights(allFlights);
         }
+        public async Task SendAllFlightsLogger(string allFlights)
+        {
+            await Clients.All.SendAllFlightsLogger(allFlights);
+        }
     }
 }

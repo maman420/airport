@@ -28,7 +28,14 @@ namespace server.Controllers
             IEnumerable<Flight> allFlights = _repository.GetAll().ToList();
             string allFlightsJson = JsonConvert.SerializeObject(allFlights);
             await _airportHub.Clients.All.SendAllFlights(allFlightsJson);
-
+            return Ok(allFlightsJson);
+        }
+        [HttpGet("flightLogger")]
+        public async Task<ActionResult<IEnumerable<Flight>>> GetAllFlightLogger()
+        {
+            IEnumerable<FlightLogger> allFlights = _repository.GetAllFlightLogger().ToList();
+            string allFlightsJson = JsonConvert.SerializeObject(allFlights);
+            await _airportHub.Clients.All.SendAllFlights(allFlightsJson);
             return Ok(allFlightsJson);
         }
 
@@ -36,12 +43,11 @@ namespace server.Controllers
         public async Task<ActionResult<Flight>> GetFlight(int id)
         {
             // this will be requested from the react app to present it in real time(signal r)
-            Flight singleFlight = await _repository.FindFlight(id);
+            Flight singleFlight = _repository.FindFlight(id);
             string singleFlightJson = JsonConvert.SerializeObject(singleFlight);
-            
             return Ok(singleFlightJson);
         }
-        
+
         [HttpPost]
         public IActionResult AddFlightFromAir(Flight flight)
         {
@@ -59,12 +65,12 @@ namespace server.Controllers
             _flightControlService.addFlightFromTerminal(flight);            
             return Ok();
         }
-
+        
         [HttpDelete]
         [Route("deleteAll")]
         public async Task<ActionResult> DeleteAll()
         {
-            await _repository.DeleteAll();
+            _repository.DeleteAll();
             return Ok();
         }
 
@@ -72,7 +78,7 @@ namespace server.Controllers
         [Route("deleteFlight/{id}")]
         public async Task<ActionResult> DeleteFlightAsync(int id)
         {
-            int deletedOrNot = await _repository.DeleteFlight(id);
+            int deletedOrNot = _repository.DeleteFlight(id);
             if(deletedOrNot == 1)
                 return Ok();
             else

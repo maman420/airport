@@ -2,84 +2,108 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using server.Models;
 
 namespace server.DAL
 {
     public class Repository : IRepository
     {
+        private readonly object contextLock = new object();
         private readonly DataContext _context;
-        
         public Repository(DataContext context)
         {
             _context = context;
         }
-        
-        public async Task DeleteAll()
+        public void DeleteAll()
         {
-            _context.flights.RemoveRange(_context.flights);
-            await _context.SaveChangesAsync();
-        }
-        
-        public async Task<int> DeleteFlight(int id)
-        {
-            var flight = _context.flights.FirstOrDefault(f => f.Id == id);
-            if (flight == null)
-            {
-                return 0;
+            lock(contextLock){
+                _context.flights.RemoveRange(_context.flights);
+                _context.SaveChanges();
             }
-            
-            _context.flights.Remove(flight);
-            await _context.SaveChangesAsync();
-            return 1;
+
         }
-        
-        public async Task<Flight?> FindFlight(int id)
+        public int DeleteFlight(int id)
         {
-            return await Task.FromResult(_context.flights.FirstOrDefault(f => f.Id == id));
+            lock(contextLock){
+                var flight = _context.flights.FirstOrDefault(f => f.Id == id);
+                if (flight == null)
+                {
+                    return 0;
+                }
+                _context.flights.Remove(flight);
+                _context.SaveChanges();
+                return 1;
+            }
         }
-        
+        public Flight? FindFlight(int id)
+        {
+            lock(contextLock)
+                return _context.flights.FirstOrDefault(f => f.Id == id);
+        }
         public IEnumerable<Flight> GetAll()
         {
-            return _context.flights;
+            lock(contextLock)
+                return _context.flights;
         }
-        
-        public async Task AddFlight(Flight flight)
+        public IEnumerable<FlightLogger> GetAllFlightLogger()
         {
-            _context.flights.Add(flight);
-            await _context.SaveChangesAsync();
+            lock(contextLock)
+                return _context.flightsLogger;
         }
-        
+        public void AddFlight(Flight flight)
+        {
+            lock (contextLock)
+            {
+                _context.flights.Add(flight);
+                _context.SaveChanges(); 
+            }
+        }
+        public void AddFlightToLogger(int flightId)
+        {
+            lock(contextLock){
+                var flight = _context.flights.FirstOrDefault(f => f.Id == flightId);
+
+                Flight flightToAdd = new Flight
+                {
+                    AirLine = flight.AirLine,
+                    LegLocation = flight.LegLocation,
+                    Name = flight.Name
+                };
+                _context.flightsLogger.Add(new FlightLogger 
+                { 
+                    Flight = flightToAdd,
+                    Exit = DateTime.Now
+                });
+                _context.SaveChanges();
+            }
+        }
         public IEnumerable<Flight> AllFlightsInLeg(int legNum)
         {
-            return _context.flights.Where(flight => flight.LegLocation == legNum);
+            lock (contextLock)
+                return _context.flights.Where(flight => flight.LegLocation == legNum);
         }
-        
         public bool isPlanesInLeg(int legNum)
         {
-            return _context.flights.Any(flight => flight.LegLocation == legNum);
+            lock(contextLock)
+                return _context.flights.Any(flight => flight.LegLocation == legNum);
         }
-        
-        public async Task ChangeLeg(int flightId, int newLegNum)
+        public void ChangeLeg(int flightId, int newLegNum)
         {
-            var changeFlightLeg = await FindFlight(flightId);
-            if (changeFlightLeg != null)
-            {
-                changeFlightLeg.LegLocation = newLegNum;
-                await _context.SaveChangesAsync();
-                
-                if (newLegNum == 0)
+            lock(contextLock){
+                var changeFlightLeg = _context.flights.FirstOrDefault(f => f.Id == flightId);
+                if (changeFlightLeg != null)
                 {
-                    _context.flightsLogger.Add(changeFlightLeg);
-                    _context.flights.Remove(changeFlightLeg);
-                    await _context.SaveChangesAsync();
+                    changeFlightLeg.LegLocation = newLegNum;
+                    _context.SaveChanges();
                 }
             }
         }
-        
         public int howMuchInLeg(int legNum)
         {
-            return _context.flights.Count(flight => flight.LegLocation == legNum);
+            lock(contextLock)
+                return _context.flights.Count(flight => flight.LegLocation == legNum);
         }
     }
 }
