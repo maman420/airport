@@ -6,13 +6,13 @@ import styles from './table.module.css';
 function Table() {
     const [table, setTable] = useState([]);
 
-    const url = "http://localhost:5014/";
+    const url = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         fetchData();
 
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("http://localhost:5014/airporthub")
+            .withUrl(url + "airporthub")
             .build();
 
         connection.on("SendAllFlights", (d) => {

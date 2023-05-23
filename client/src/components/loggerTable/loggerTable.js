@@ -7,13 +7,13 @@ import styles from './loggerTable.module.css';
 function LoggerTable() {
     const [flightLogger, setFlightLogger] = useState([]);
 
-    const url = "http://localhost:5014/";
+    const url = process.env.REACT_APP_API_URL;
 
     useEffect(() => {
         fetchData();
 
         const connection = new signalR.HubConnectionBuilder()
-            .withUrl("http://localhost:5014/airporthub")
+            .withUrl(url + "airporthub")
             .build();
 
         connection.on("SendAllFlightsLogger", (d) => {
