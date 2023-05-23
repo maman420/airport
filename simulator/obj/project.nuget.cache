@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AXt1sru9uGhRCwYexvE0DBVD3JuNduyT+lz27Dz83sJzKK2Mfm5WenqRJtOd8qVTOieINy/4h1Q7mRfjH35R2A==",
+  "dgSpecHash": "/W5alMuLOpBqiZ/KYdmDlHIsf3gf/k4Bj2t6egbdaUeK0kEGfr47ADCHO/ZJ+sWWl53rpOT4/U2DpAd1EzoV7Q==",
   "success": true,
-  "projectFilePath": "/home/ron/Desktop/finalProject/airport/simulator/simulator.csproj",
+  "projectFilePath": "/home/ron/Desktop/airport/simulator/simulator.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

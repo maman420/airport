@@ -858,6 +858,19 @@
           }
         }
       },
+      "NLog/5.1.4": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/NLog.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/NLog.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.1.2": {
         "type": "package",
         "dependencies": {
@@ -2429,6 +2442,30 @@
         "newtonsoft.json.nuspec"
       ]
     },
+    "NLog/5.1.4": {
+      "sha512": "Ki0XThITEd//RrQ21yi1HB/Uid4pzTRE5YLvEpk91d0vDXp3OPtVCvWgrYsqqcpTwiipFSOLSsU1RblaexrFiA==",
+      "type": "package",
+      "path": "nlog/5.1.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "N.png",
+        "lib/net35/NLog.dll",
+        "lib/net35/NLog.xml",
+        "lib/net45/NLog.dll",
+        "lib/net45/NLog.xml",
+        "lib/net46/NLog.dll",
+        "lib/net46/NLog.xml",
+        "lib/netstandard1.3/NLog.dll",
+        "lib/netstandard1.3/NLog.xml",
+        "lib/netstandard1.5/NLog.dll",
+        "lib/netstandard1.5/NLog.xml",
+        "lib/netstandard2.0/NLog.dll",
+        "lib/netstandard2.0/NLog.xml",
+        "nlog.5.1.4.nupkg.sha512",
+        "nlog.nuspec"
+      ]
+    },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.2": {
       "sha512": "ilkvNhrTersLmIVAcDwwPqfhUFCg19Z1GVMvCSi3xk6Akq94f4qadLORQCq/T8+9JgMiPs+F/NECw5uauviaNw==",
       "type": "package",
@@ -3482,6 +3519,7 @@
       "Microsoft.AspNetCore.SignalR >= 1.1.0",
       "Microsoft.EntityFrameworkCore.Sqlite >= 6.0.16",
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.16",
+      "NLog >= 5.1.4",
       "Swashbuckle.AspNetCore >= 6.5.0",
       "Swashbuckle.AspNetCore.Annotations >= 6.5.0"
     ]
@@ -3492,11 +3530,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/ron/Desktop/finalProject/airport/server/server.csproj",
+      "projectUniqueName": "/home/ron/Desktop/airport/server/server.csproj",
       "projectName": "server",
-      "projectPath": "/home/ron/Desktop/finalProject/airport/server/server.csproj",
+      "projectPath": "/home/ron/Desktop/airport/server/server.csproj",
       "packagesPath": "/home/ron/.nuget/packages/",
-      "outputPath": "/home/ron/Desktop/finalProject/airport/server/obj/",
+      "outputPath": "/home/ron/Desktop/airport/server/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/ron/.nuget/NuGet/NuGet.Config"
@@ -3544,6 +3582,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[6.0.16, )"
+          },
+          "NLog": {
+            "target": "Package",
+            "version": "[5.1.4, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",

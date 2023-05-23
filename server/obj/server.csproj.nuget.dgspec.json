@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/home/ron/Desktop/finalProject/airport/server/server.csproj": {}
+    "/home/ron/Desktop/airport/server/server.csproj": {}
   },
   "projects": {
-    "/home/ron/Desktop/finalProject/airport/server/server.csproj": {
+    "/home/ron/Desktop/airport/server/server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/ron/Desktop/finalProject/airport/server/server.csproj",
+        "projectUniqueName": "/home/ron/Desktop/airport/server/server.csproj",
         "projectName": "server",
-        "projectPath": "/home/ron/Desktop/finalProject/airport/server/server.csproj",
+        "projectPath": "/home/ron/Desktop/airport/server/server.csproj",
         "packagesPath": "/home/ron/.nuget/packages/",
-        "outputPath": "/home/ron/Desktop/finalProject/airport/server/obj/",
+        "outputPath": "/home/ron/Desktop/airport/server/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/home/ron/.nuget/NuGet/NuGet.Config"
@@ -59,6 +59,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[6.0.16, )"
+            },
+            "NLog": {
+              "target": "Package",
+              "version": "[5.1.4, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

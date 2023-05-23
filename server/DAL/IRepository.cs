@@ -8,7 +8,7 @@ namespace server.DAL
     public interface IRepository
     {
         IEnumerable<Flight> GetAll();
-        Flight? FindFlight(int id);
+        Flight FindFlight(int id);
         void DeleteAll();
         int DeleteFlight(int id);
         void AddFlight(Flight flight);

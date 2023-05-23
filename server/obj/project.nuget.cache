@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NYDorXIksLDGILHCFiuIxbgTvH4bnqmJVOWWMfzmB3cJc97KhEDDBAoMnR35tj2gXaQv6JzdqzLJzi1gyAoMCw==",
+  "dgSpecHash": "bs5eQuSNrdcx4G0wVzfgQ/41uzgDz+U1uu3ha9FcLpxTtruoFBnyMmhnQpLXCxMja6XljtiglyHW30EVOVwNZA==",
   "success": true,
-  "projectFilePath": "/home/ron/Desktop/finalProject/airport/server/server.csproj",
+  "projectFilePath": "/home/ron/Desktop/airport/server/server.csproj",
   "expectedPackageFiles": [
     "/home/ron/.nuget/packages/humanizer.core/2.8.26/humanizer.core.2.8.26.nupkg.sha512",
     "/home/ron/.nuget/packages/microsoft.aspnetcore.authentication.abstractions/2.2.0/microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
@@ -55,6 +55,7 @@
     "/home/ron/.nuget/packages/microsoft.netcore.targets/1.1.0/microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "/home/ron/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
     "/home/ron/.nuget/packages/newtonsoft.json/11.0.2/newtonsoft.json.11.0.2.nupkg.sha512",
+    "/home/ron/.nuget/packages/nlog/5.1.4/nlog.5.1.4.nupkg.sha512",
     "/home/ron/.nuget/packages/sqlitepclraw.bundle_e_sqlite3/2.1.2/sqlitepclraw.bundle_e_sqlite3.2.1.2.nupkg.sha512",
     "/home/ron/.nuget/packages/sqlitepclraw.core/2.1.2/sqlitepclraw.core.2.1.2.nupkg.sha512",
     "/home/ron/.nuget/packages/sqlitepclraw.lib.e_sqlite3/2.1.2/sqlitepclraw.lib.e_sqlite3.2.1.2.nupkg.sha512",

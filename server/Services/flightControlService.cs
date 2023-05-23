@@ -216,7 +216,6 @@ namespace server.Services
         {
             _repository.ChangeLeg(flightId, 0);
             _repository.AddFlightToLogger(flightId);
-            _repository.DeleteFlight(flightId);
 
             IEnumerable<FlightLogger> allFlights = _repository.GetAllFlightLogger().ToList();
             string allFlightsJson = JsonConvert.SerializeObject(allFlights);

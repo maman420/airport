@@ -21,7 +21,6 @@ namespace server.Controllers
             _airportHub = airportHub;
             _repository = repository;
         }
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Flight>>> GetAllFlights()
         {
@@ -38,7 +37,6 @@ namespace server.Controllers
             await _airportHub.Clients.All.SendAllFlights(allFlightsJson);
             return Ok(allFlightsJson);
         }
-
         [HttpGet("flight")]
         public async Task<ActionResult<Flight>> GetFlight(int id)
         {
@@ -47,7 +45,6 @@ namespace server.Controllers
             string singleFlightJson = JsonConvert.SerializeObject(singleFlight);
             return Ok(singleFlightJson);
         }
-
         [HttpPost]
         public IActionResult AddFlightFromAir(Flight flight)
         {
@@ -56,7 +53,6 @@ namespace server.Controllers
             _flightControlService.addFlightFromAir(flight);
             return Ok();
         }
-
         [HttpPost("fromTerminal")]
         public IActionResult AddFlightFromTerminal(Flight flight)
         {
@@ -65,7 +61,6 @@ namespace server.Controllers
             _flightControlService.addFlightFromTerminal(flight);            
             return Ok();
         }
-        
         [HttpDelete]
         [Route("deleteAll")]
         public async Task<ActionResult> DeleteAll()
@@ -73,7 +68,6 @@ namespace server.Controllers
             _repository.DeleteAll();
             return Ok();
         }
-
         [HttpDelete]
         [Route("deleteFlight/{id}")]
         public async Task<ActionResult> DeleteFlightAsync(int id)

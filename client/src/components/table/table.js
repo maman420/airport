@@ -5,7 +5,6 @@ import styles from './table.module.css';
 
 function Table() {
     const [table, setTable] = useState([]);
-    const [flightLogger, setFlightLogger] = useState([]);
 
     const url = "http://localhost:5014/";
 
@@ -17,10 +16,7 @@ function Table() {
             .build();
 
         connection.on("SendAllFlights", (d) => {
-            setTable(JSON.parse(d).filter(item => item.LegLocation != 0));
-        });
-        connection.on("SendAllFlightsLogger", (d) => {
-            setFlightLogger(JSON.parse(d));
+            setTable(JSON.parse(d).filter(item => item.LegLocation !== 0));
         });
 
         connection.start();
@@ -29,10 +25,7 @@ function Table() {
     const fetchData = async () => {
         try {
             const tableResponse = await axios.get(url);
-            setTable(tableResponse.data);
-
-            const flightLoggerResponse = await axios.get(url + "flightLogger");
-            setFlightLogger(flightLoggerResponse.data);
+            setTable(tableResponse.data.filter(item => item.LegLocation !== 0));
         } catch (error) {
             console.error(error); 
         } 
@@ -50,6 +43,7 @@ function Table() {
 
     return (
         <div>
+            <h1>active flights</h1>
             <table className={styles.styledTable}>
                 <thead>
                     <tr>
@@ -72,27 +66,6 @@ function Table() {
                     ))} 
                 </tbody>
             </table><br/>
-            <h1>logger</h1><br/>
-            <table className={styles.styledTable}>
-                <thead>
-                    <tr>
-                        <th>flight logger</th>
-                        <th>name</th>
-                        <th>location</th>
-                        <th>Airline</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {flightLogger.map((item, index) => (
-                        <tr key={index} className={styles.activeRow}>
-                            <td>{item.Flight.Id}</td>
-                            <td>{item.Flight.Name}</td>
-                            <td>{item.Flight.LegLocation}</td>
-                            <td>{item.Flight.AirLine}</td>
-                        </tr>
-                    ))} 
-                </tbody>
-            </table>
         </div>
     );
 }

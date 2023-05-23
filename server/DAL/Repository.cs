@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using server.Hubs;
 using server.Models;
 
 namespace server.DAL
@@ -34,10 +36,11 @@ namespace server.DAL
                 }
                 _context.flights.Remove(flight);
                 _context.SaveChanges();
+
                 return 1;
             }
         }
-        public Flight? FindFlight(int id)
+        public Flight FindFlight(int id)
         {
             lock(contextLock)
                 return _context.flights.FirstOrDefault(f => f.Id == id);
@@ -45,12 +48,12 @@ namespace server.DAL
         public IEnumerable<Flight> GetAll()
         {
             lock(contextLock)
-                return _context.flights;
+                return _context.flights.ToList();
         }
         public IEnumerable<FlightLogger> GetAllFlightLogger()
         {
             lock(contextLock)
-                return _context.flightsLogger;
+                return _context.flightsLogger.ToList();
         }
         public void AddFlight(Flight flight)
         {
@@ -58,25 +61,30 @@ namespace server.DAL
             {
                 _context.flights.Add(flight);
                 _context.SaveChanges(); 
-            }
+            }                
+            string flightJson = JsonConvert.SerializeObject(flight);
         }
         public void AddFlightToLogger(int flightId)
         {
             lock(contextLock){
                 var flight = _context.flights.FirstOrDefault(f => f.Id == flightId);
 
-                Flight flightToAdd = new Flight
-                {
-                    AirLine = flight.AirLine,
-                    LegLocation = flight.LegLocation,
-                    Name = flight.Name
-                };
-                _context.flightsLogger.Add(new FlightLogger 
-                { 
-                    Flight = flightToAdd,
-                    Exit = DateTime.Now
-                });
-                _context.SaveChanges();
+                if(flight != null){
+                    Flight flightToAdd = new Flight
+                    {
+                        AirLine = flight.AirLine,
+                        LegLocation = flight.LegLocation,
+                        Name = flight.Name
+                    };
+                    _context.flightsLogger.Add(new FlightLogger 
+                    { 
+                        Flight = flightToAdd,
+                        Exit = DateTime.Now
+                    });
+                    _context.SaveChanges();
+
+                }
+
             }
         }
         public IEnumerable<Flight> AllFlightsInLeg(int legNum)
