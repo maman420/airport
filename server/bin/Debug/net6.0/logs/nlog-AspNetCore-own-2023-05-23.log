@@ -1,0 +1,47 @@
+2023-05-23 16:24:41.0820|0|DEBUG|Program|init main |url: |action: 
+2023-05-23 16:24:43.4053|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: https://localhost:7196 |url: |action: 
+2023-05-23 16:24:43.4216|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: http://localhost:5014 |url: |action: 
+2023-05-23 16:24:43.4216|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: 
+2023-05-23 16:24:43.4216|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: 
+2023-05-23 16:24:43.4216|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\maman\OneDrive\שולחן העבודה\airport\server\ |url: |action: 
+2023-05-23 16:25:27.9158|1|DEBUG|server.Controllers.mainController|NLog injected into HomeController |url: https://localhost/|action: GetAllFlights
+2023-05-23 16:30:39.7581|0|DEBUG|Program|init main |url: |action: 
+2023-05-23 16:30:41.7502|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: https://localhost:7196 |url: |action: 
+2023-05-23 16:30:41.7618|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: http://localhost:5014 |url: |action: 
+2023-05-23 16:30:41.7618|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: 
+2023-05-23 16:30:41.7618|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: 
+2023-05-23 16:30:41.7618|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\maman\OneDrive\שולחן העבודה\airport\server\ |url: |action: 
+2023-05-23 16:30:50.8634|1|DEBUG|server.Controllers.mainController|NLog injected into HomeController |url: https://localhost/|action: GetAllFlights
+2023-05-23 16:30:56.0112|1|DEBUG|server.Controllers.mainController|NLog injected into HomeController |url: https://localhost/|action: GetAllFlights
+2023-05-23 16:34:55.2024|0|DEBUG|Program|init main |url: |action: 
+2023-05-23 16:34:57.2874|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: https://localhost:7196 |url: |action: 
+2023-05-23 16:34:57.2874|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: http://localhost:5014 |url: |action: 
+2023-05-23 16:34:57.2874|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: 
+2023-05-23 16:34:57.2874|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: 
+2023-05-23 16:34:57.2874|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\maman\OneDrive\שולחן העבודה\airport\server\ |url: |action: 
+2023-05-23 16:35:05.8660|1|DEBUG|server.Controllers.mainController|NLog injected into HomeController |url: https://localhost/|action: GetAllFlights
+2023-05-23 16:36:48.5182|0|DEBUG|Program|init main |url: |action: 
+2023-05-23 16:36:50.3026|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: https://localhost:7196 |url: |action: 
+2023-05-23 16:36:50.3135|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: http://localhost:5014 |url: |action: 
+2023-05-23 16:36:50.3135|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: 
+2023-05-23 16:36:50.3135|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: 
+2023-05-23 16:36:50.3135|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\maman\OneDrive\שולחן העבודה\airport\server\ |url: |action: 
+2023-05-23 16:36:58.5027|1|DEBUG|server.Controllers.mainController|NLog injected into HomeController |url: https://localhost/|action: GetAllFlights
+2023-05-23 21:05:24.2562|0|DEBUG|Program|init main |url: |action: 
+2023-05-23 21:05:26.4678|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: https://localhost:7196 |url: |action: 
+2023-05-23 21:05:26.5069|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: http://localhost:5014 |url: |action: 
+2023-05-23 21:05:26.5069|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: 
+2023-05-23 21:05:26.5069|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: 
+2023-05-23 21:05:26.5069|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\maman\OneDrive\שולחן העבודה\airport\server\ |url: |action: 
+2023-05-23 21:07:18.4692|0|DEBUG|Program|init main |url: |action: 
+2023-05-23 21:07:20.5519|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: https://localhost:7196 |url: |action: 
+2023-05-23 21:07:20.5519|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: http://localhost:5014 |url: |action: 
+2023-05-23 21:07:20.5519|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: 
+2023-05-23 21:07:20.5519|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: 
+2023-05-23 21:07:20.5519|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\maman\OneDrive\שולחן העבודה\airport\server\ |url: |action: 
+2023-05-23 21:09:05.6376|0|DEBUG|Program|init main |url: |action: 
+2023-05-23 21:09:07.7502|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: https://localhost:7196 |url: |action: 
+2023-05-23 21:09:07.7616|14|INFO|Microsoft.Hosting.Lifetime|Now listening on: http://localhost:5014 |url: |action: 
+2023-05-23 21:09:07.7616|0|INFO|Microsoft.Hosting.Lifetime|Application started. Press Ctrl+C to shut down. |url: |action: 
+2023-05-23 21:09:07.7616|0|INFO|Microsoft.Hosting.Lifetime|Hosting environment: Development |url: |action: 
+2023-05-23 21:09:07.7616|0|INFO|Microsoft.Hosting.Lifetime|Content root path: C:\Users\maman\OneDrive\שולחן העבודה\airport\server\ |url: |action: 

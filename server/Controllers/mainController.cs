@@ -14,12 +14,14 @@ namespace server.Controllers
     {
         private IHubContext < airportHub, IairportHub > _airportHub;
         private readonly flightControlService _flightControlService;
+        private readonly ILogger<mainController> _logger;
         private readonly Repository _repository;
-        public mainController(Repository repository, flightControlService flightControlService, IHubContext < airportHub, IairportHub > airportHub)
+        public mainController(Repository repository, flightControlService flightControlService, IHubContext < airportHub, IairportHub > airportHub, ILogger<mainController> logger)
         {
             _flightControlService = flightControlService;
             _airportHub = airportHub;
             _repository = repository;
+            _logger = logger;
         }
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Flight>>> GetAllFlights()
